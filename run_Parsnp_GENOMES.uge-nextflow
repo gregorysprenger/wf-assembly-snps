@@ -2,14 +2,14 @@
 #$ -cwd
 
 # This wrapper script manages job submission of
-#  the wf-assembly-snps REFERENCE vs GENOME PANEL on the UGE scheduler.
+#  the wf-assembly-snps GENOME PANEL on the UGE scheduler.
 SCRIPT_NAME="$(basename ${0#_} .uge-nextflow)"
 
 # Define script usage
 
 usage() {
   echo "
-Usage: ${0##*/} ReferenceInput GenomeDirectory [OutputDirectory] [-h|--help]
+Usage: ${0##*/} GenomeDirectory [OutputDirectory] [-h|--help]
 
 Required:
 <GenomeDirectory>     Path to FastA formatted files ending in:
@@ -19,7 +19,7 @@ Required:
   Make sure file names are descriptive and concise.
   WARNING: Whitespace is forbidden in filenames.
 
-  Only files that exceed 45 kB in size within <ReferenceInput> and
+  Only files that exceed 45 kB in size within
   <GenomeDirectory> will be used for SNP identification.
 
 Optional:
@@ -109,16 +109,11 @@ if [[ $1 =~ .+[[:space:]].+ ]]; then
   echo -e "${RED_TXT}ERROR:${COLOR_OFF} whitespace in $1 path unsupported" >&2
   exit 1
 fi
-if [[ $2 =~ .+[[:space:]].+ ]]; then
-  echo -e "${RED_TXT}ERROR:${COLOR_OFF} whitespace in $2 path unsupported" >&2
-  exit 1
-fi
-REFERENCE=$(readlink -f "$1")
-GENOMES=$(readlink -f "$2")
+GENOMES=$(readlink -f "$1")
 if [[ -z "$3" ]]; then
   OUT="${PWD}"
 else
-  OUT=$(readlink -f "$3")
+  OUT=$(readlink -f "$2")
 fi
 
 # Get LAB_HOME or custom tmp/cache variables from user's ~/.bashrc,
@@ -191,50 +186,6 @@ if [[ ${GENOMES} =~ ^.+[A-Z]\:.+ ]]; then
   done
 fi
 
-if [[ ${REFERENCE} =~ ^.+[A-Z]\:.+ ]]; then
-  path_slashes_replaced="$(echo "${REFERENCE}" | cut -d ':' -f 2 | sed 's/\\/\//g')"
-  filename="$(basename ${path_slashes_replaced})"
-  user_home="${HOME}"/"${path_slashes_replaced}"
-  user_group_main="/scicomp${path_slashes_replaced}" # Dropped slash between scicomp and var
-  user_group_branch="/scicomp/groups/OID/NCEZID/DHCPP/BSPB/${path_slashes_replaced}"
-  lab_home="${LAB_HOME}"/"${path_slashes_replaced}"
-  paths=(
-    "${user_home}"
-    "${user_group_main}"
-    "${user_group_branch}"
-    "${lab_home}"
-    )
-  for path in "${paths[@]}"; do
-    cnt_read_files=$(find -L "${path}" \
-      -maxdepth 2 \
-      -type f \
-      -readable \
-      -name ${filename} \
-      2> /dev/null \
-      | wc -l)
-    if [[ ${cnt_read_files} -ge 1 ]]; then
-        echo -e "${YELLOW_TXT}\n${cnt_read_files} FastA file found with name ${filename} in: ${path}${COLOR_OFF}"
-        echo -e "${RED_BG}"
-        read -p "Use ${path}/${filename} as Reference Input? (yes|no) " -n 1 -r
-        echo -e "${COLOR_OFF}"
-        if [[ $REPLY =~ ^[yY] ]]; then
-          REFERENCE="${path}/${filename}"
-        else
-          exit 0
-        fi
-        break
-    fi
-  done
-fi
-
-# Make sure REFERENCE is in the proper format
-if [[ ${REFERENCE} =~ ^.*\.(fasta|fas|fna|fsa|fa)($|\.gz$) ]]; then
-  echo -e "\nFound reference input $(basename ${REFERENCE}). Continuing..\n"
-else
-  echo -e "${RED_TXT}$(basename ${REFERENCE}) does not meet required file format."
-  echo -e "Please use files ending in fasta,fas,fna,fsa,fa (may also be .gz compressed).${COLOR_OFF}"
-fi
-
 # For now, just output into shared LAB_HOME area
 if [[ ${OUT} =~ ^.+[A-Z]\:.+ ]]; then
   echo -e "${YELLOW_TXT}\nWindows hard mount path detected as Output Directory ${COLOR_OFF}"
@@ -303,9 +254,6 @@ for (( i=0; i<${#found_files[@]}; i++ )); do
   submitted+=(${base})
 done
 
-# Add basename of Reference to $submitted
-submitted+=( $(basename ${REFERENCE} | sed 's/_genomic//1') )
-
 # Prompt user if >10 samples to prevent accidentally performing SNP identification on too many
 if [[ ${#submitted[@]} -ge 10 ]]; then
   echo -e "${YELLOW_TXT}\nWARNING: ${#submitted[@]} samples have been identified:\n${COLOR_OFF}"
@@ -359,7 +307,7 @@ else
 fi
 
 module load nextflow
-nextflow pull gregorysprenger/wf-assembly-snps -r greg
+nextflow pull bacterial-genomics/wf-assembly-snps -r main
 
 # If FastQ files are able to be submitted, submit and display basenames
 if [[ ${#submitted[@]} -ge 2 ]] && \
@@ -368,10 +316,9 @@ if [[ ${#submitted[@]} -ge 2 ]] && \
   # Submit Nextflow pipeline to Aspen HPC
   qsub \
     -v OUT=${OUT} \
-    -v REFERENCE=${REFERENCE} \
     -v GENOMES=${GENOMES} \
     -v SNP_PACKAGE="parsnp" \
-    -v TYPE="REFERENCE_vs_GENOMES" \
+    -v TYPE="GENOMES" \
     -m ba \
     -q ${QUEUE} \
     -o ${OUT}/pipeline_info \
@@ -382,17 +329,16 @@ if [[ ${#submitted[@]} -ge 2 ]] && \
     -v SINGULARITY_TMPDIR=${SINGULARITY_TMPDIR} \
     -v SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR} \
     -v NXF_SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR} \
-    ${HOME}/.nextflow/assets/gregorysprenger/wf-assembly-snps/_run_snp_identification.uge-nextflow
+    ${HOME}/.nextflow/assets/bacterial-genomics/wf-assembly-snps/_run_snp_identification.uge-nextflow
 
 elif [[ ${#submitted[@]} -ge 2 ]] && \
   [[ ${NODE_NUM} -ge 231 ]]; then
   # Submit Nextflow pipeline to Rosalind HPC
   qsub \
     -v OUT=${OUT} \
-    -v REFERENCE=${REFERENCE} \
     -v GENOMES=${GENOMES} \
     -v SNP_PACKAGE="parsnp" \
-    -v TYPE="REFERENCE_vs_GENOMES" \
+    -v TYPE="GENOMES" \
     -m ba \
     -q ${QUEUE} \
     -o ${OUT}/pipeline_info \
@@ -404,19 +350,14 @@ elif [[ ${#submitted[@]} -ge 2 ]] && \
     -v SINGULARITY_TMPDIR=${SINGULARITY_TMPDIR} \
     -v SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR} \
     -v NXF_SINGULARITY_CACHEDIR=${SINGULARITY_CACHEDIR} \
-    ${HOME}/.nextflow/assets/gregorysprenger/wf-assembly-snps/_run_snp_identification.uge-nextflow
+    ${HOME}/.nextflow/assets/bacterial-genomics/wf-assembly-snps/_run_snp_identification.uge-nextflow
 
 else
   echo -e "${RED_TXT}Biolinux/Aspen/Rosalind HPC is not detected.\nSubmission cancelled. ${COLOR_OFF}"
   exit 1
 fi
 
-# Add Reference basename to submitted array
-reference_base=$(basename ${REFERENCE} | sed 's/[.].*//g' | sed 's/_genomic//1')
-submitted+=(${reference_base})
-
 # Display basename of FastQ files submitted
-echo -e "${GREEN_TXT}\nReference input:${COLOR_OFF} ${REFERENCE}"
 echo -e "${GREEN_TXT}Genome directory:${COLOR_OFF} ${GENOMES}"
 echo -e "${GREEN_TXT}Output directory:${COLOR_OFF} ${OUT}"
 echo -e "${GREEN_TXT}\nGenerating SNP identifications for:"
