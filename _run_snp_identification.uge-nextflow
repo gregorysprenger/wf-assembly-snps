@@ -18,8 +18,8 @@ if [[ ${TYPE} =~ REFERENCE.* ]]; then
   nextflow \
     -log ${OUT}/pipeline_info/nextflow_log.${SCRIPT_NAME}.txt \
     run \
-    bacterial-genomics/wf-assembly-snps \
-    -r main \
+    gregorysprenger/wf-assembly-snps \
+    -r greg \
     -w /scicomp/scratch/${USER}/work \
     -N ${USER}@cdc.gov \
     --snp_package ${SNP_PACKAGE} \
@@ -34,8 +34,8 @@ else
   nextflow \
     -log ${OUT}/pipeline_info/nextflow_log.${SCRIPT_NAME}.txt \
     run \
-    bacterial-genomics/wf-assembly-snps \
-    -r main \
+    gregorysprenger/wf-assembly-snps \
+    -r greg \
     -w /scicomp/scratch/${USER}/work \
     -N ${USER}@cdc.gov \
     --snp_package ${SNP_PACKAGE} \

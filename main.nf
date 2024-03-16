@@ -3,9 +3,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     wf-assembly-snps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/bacterial-genomics/wf-assembly-snps
+    Github : https://github.com/gregorysprenger/wf-assembly-snps
 
-    Website: https://github.com/bacterial-genomics/wf-assembly-snps
+    Website: https://github.com/gregorysprenger/wf-assembly-snps
 ----------------------------------------------------------------------------------------
 */
 

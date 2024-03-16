@@ -1,6 +1,6 @@
 {
-    "name": "bacterial-genomics/wf-assembly-snps",
-    "homePage": "https://github.com/bacterial-genomics/wf-assembly-snps",
+    "name": "gregorysprenger/wf-assembly-snps",
+    "homePage": "https://github.com/gregorysprenger/wf-assembly-snps",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {

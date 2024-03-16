@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for the bacterial-genomics/wf-assembly-snps pipeline
+description: Suggest an idea for the gregorysprenger/wf-assembly-snps pipeline
 labels: enhancement
 body:
   - type: textarea

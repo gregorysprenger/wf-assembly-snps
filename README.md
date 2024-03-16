@@ -1,15 +1,15 @@
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/wf-assembly-snps_logo_dark.png">
-    <img alt="bacterial-genomics/wf-assembly-snps" src="docs/images/wf-assembly-snps_logo_light.png">
+    <img alt="gregorysprenger/wf-assembly-snps" src="docs/images/wf-assembly-snps_logo_light.png">
   </picture>
 </h1>
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/bacterial-genomics/wf-assembly-snps)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/gregorysprenger/wf-assembly-snps)
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.04.3-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![MegaLinter](https://github.com/bacterial-genomics/wf-assembly-snps/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/bacterial-genomics/wf-assembly-snps/actions/workflows/mega-linter.yml)
+[![MegaLinter](https://github.com/gregorysprenger/wf-assembly-snps/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/gregorysprenger/wf-assembly-snps/actions/workflows/mega-linter.yml)
 
 ![workflow](docs/images/wf-assembly-snps_workflow.png)
 
@@ -37,15 +37,15 @@ Run the built-in test set to confirm all parts are working as-expected. It will 
 ### Pull workflow from GitHub
 
 ```
-nextflow pull bacterial-genomics/wf-assembly-snps
+nextflow pull gregorysprenger/wf-assembly-snps
 ```
 
 ### Run test workflow
 
 ```
 nextflow run \
-  bacterial-genomics/wf-assembly-snps \
-  -r main \
+  gregorysprenger/wf-assembly-snps \
+  -r greg \
   -profile <docker|singularity>,test \
   --outdir results
 ```
@@ -57,15 +57,15 @@ Example command on FastAs in "new-fasta-dir" data using **BLAST** with singulari
 ### Pull workflow from GitHub
 
 ```
-nextflow pull bacterial-genomics/wf-assembly-snps
+nextflow pull gregorysprenger/wf-assembly-snps
 ```
 
 ### Run workflow
 
 ```
 nextflow run \
-  bacterial-genomics/wf-assembly-snps \
-  -r main \
+  gregorysprenger/wf-assembly-snps \
+  -r greg \
   -profile singularity \
   --input new-fasta-dir \
   --outdir my-results \
@@ -129,8 +129,8 @@ View help menu of all workflow options:
 
 ```
 nextflow run \
-  bacterial-genomics/wf-assembly-snps \
-  -r main \
+  gregorysprenger/wf-assembly-snps \
+  -r greg \
   --help \
   --show_hidden_params
 ```

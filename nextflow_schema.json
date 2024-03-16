@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/bacterial-genomics/wf-assembly-snps/main/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/gregorysprenger/wf-assembly-snps/main/nextflow_schema.json",
     "title": "wf-assembly-snps pipeline parameters",
     "description": "Identify SNPs from genome assemblies.",
     "type": "object",

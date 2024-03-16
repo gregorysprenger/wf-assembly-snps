@@ -1,7 +1,7 @@
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/wf-assembly-snps_logo_dark.png">
-    <img alt="bacterial-genomics/wf-assembly-snps" src="docs/images/wf-assembly-snps_logo_light.png">
+    <img alt="gregorysprenger/wf-assembly-snps" src="docs/images/wf-assembly-snps_logo_light.png">
   </picture>
 </h1>
 
@@ -17,7 +17,7 @@
 ## Install on our HPC
 
 ```
-git clone https://github.com/bacterial-genomics/wf-assembly-snps.git $LAB_HOME/workflows
+git clone https://github.com/gregorysprenger/wf-assembly-snps.git $LAB_HOME/workflows
 ```
 
 ## Setup Singularity environment variables - For Aspen Cluster
