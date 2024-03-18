@@ -1015,6 +1015,3 @@ GitHub API response: {"message":"Resource not accessible by integration","docume
 - [python] oxsecurity/megalinter/flavors/python@v7 (62 linters) https://megalinter.io/7.10.0/flavors/python/
 - [cupcake] oxsecurity/megalinter/flavors/cupcake@v7 (84 linters) https://megalinter.io/7.10.0/flavors/cupcake/
 
-[Updated Sources Reporter] copied 12 fixed source files in folder /github/workspace/megalinter-reports/updated_sources.
-Download it from artifacts then copy-paste it in your local repo to apply linters updates
-[33m⚠️ Successfully linted all files, but with ignored errors[0m
